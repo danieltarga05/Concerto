@@ -147,7 +147,7 @@ class Concerto
     $db->connessione();
 
     $salaId = $this->__getId();
-    $sala = Sala::Find($salaId);
+    $sala = $db->findSala($salaId);
 
     $db->close();
 
@@ -157,6 +157,7 @@ class Concerto
         return null;
     }
 }
+
 
     private function SetNew(array $params) //metodo utilizzato per il settaggio di un nuovo record
     {

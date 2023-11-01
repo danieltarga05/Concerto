@@ -140,6 +140,16 @@ class dbManager //classe utilizzata per gestire il database organizzazione_conce
         return $this->execute();
     }
 
+    public function findSala($id) // method to find a Sala record by its ID
+    {
+        $this->prepare('select * from organizzazione_concerti.sale where id = :id');
+        $this->bindParamI(':id', $id);
+        if (!$this->execute()) {
+            return false;
+        }
+        return $this->fetchNext();
+    }
+
     
 }
 ?>
