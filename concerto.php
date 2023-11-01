@@ -141,22 +141,29 @@ class Concerto
         return false;
     }
 
-    public function Sala()
-{
-    $db = new dbManager('config.txt');
-    $db->connessione();
+    
+    public function sala()
+    {
+        $db = new dbManager('config.txt');
+        $db->connessione();
 
-    $salaId = $this->__getId();
-    $sala = $db->findSala($salaId);
+        $salaId = $this->__getId(); // Assume getId() is a method in Concerto class
 
-    $db->close();
+        if (!$salaId) {
+            $db->close();
+            return null;
+        }
 
-    if ($sala) {
-        return new Sala(strval($sala->codice), strval($sala->nome), strval($sala->capienza));
-    } else {
+        $salaRecord = $db->findSala($salaId);
+
+        $db->close();
+
+        if ($salaRecord) {
+            return new Sala ($salaRecord->nome, $salaRecord->codice, $salaRecord->capienza);
+        }
+
         return null;
     }
-}
 
 
     private function SetNew(array $params) //metodo utilizzato per il settaggio di un nuovo record
@@ -295,22 +302,25 @@ function find_all() //metodo utilizzata per l'implementazione della metodo Find_
     }
 }
 
-function sala()
+function showSala()
 {
     echo "Inserisci id del concerto per visualizzare la sala: ";
     $id = readline();
-    if ($concerto = Concerto::Find($id)) {
+
+    $concerto = Concerto::Find($id);
+
+    if ($concerto) {
         $sala = $concerto->sala();
+
         if ($sala) {
-            echo "Sala associata al concerto:\n";
-            echo "ID: " . $sala->__getId() . " - Codice: " . $sala->__getCodice() . " - Nome: " . $sala->__getNome() . " - Capienza: " . $sala->__getCapienza() . "\n";
-        } else {
-            echo "Nessuna sala associata al concerto.\n";
+            echo "Nome: {$sala->getNome()} - Codice: {$sala->getCodice()} - Capienza: {$sala->getCapienza()}\n";
+            return;
         }
-        return;
     }
-    echo "ID non esistente.\n";
+
+    echo "Impossibile recuperare le informazioni sulla sala.\n";
 }
+
 
 
 while (1) { //menu a riga di comando
@@ -342,7 +352,7 @@ while (1) { //menu a riga di comando
             find_all();
             break;
         case 6:
-            sala();
+            showSala();
             break;
     
     }
