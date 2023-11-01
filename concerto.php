@@ -313,7 +313,7 @@ function showSala()
         $sala = $concerto->sala();
 
         if ($sala) {
-            echo "Nome: {$sala->getNome()} - Codice: {$sala->getCodice()} - Capienza: {$sala->getCapienza()}\n";
+            echo "Nome: {$sala->__getNome()} - Codice: {$sala->__getCodice()} - Capienza: {$sala->__getCapienza()}\n";
             return;
         }
     }
