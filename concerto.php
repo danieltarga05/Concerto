@@ -142,17 +142,22 @@ class Concerto
     }
 
     public function Sala()
-    {
-        $db = new dbManager('config.txt');
-        $db->connessione();
+{
+    $db = new dbManager('config.txt');
+    $db->connessione();
 
-        $salaId = $this->__getId(); // Assume che l'id della sala sia uguale all'id del concerto
-        $sala = Sala::Find($salaId);
+    $salaId = $this->__getId();
+    $sala = Sala::Find($salaId);
 
-        $db->close();
+    $db->close();
 
-        return $sala;
+    if ($sala) {
+        return new Sala(strval($sala->codice), strval($sala->nome), strval($sala->capienza));
+    } else {
+        return null;
     }
+}
+
     private function SetNew(array $params) //metodo utilizzato per il settaggio di un nuovo record
     {
         $updated = Concerto::Find($this->__getId()); //metodo per la ricerca dell'oggetto tramite id all'interno della tabella concerti
@@ -297,7 +302,7 @@ function sala()
         $sala = $concerto->sala();
         if ($sala) {
             echo "Sala associata al concerto:\n";
-            echo "ID: " . $sala->getId() . " - Nome: " . $sala->getNome() . "\n";
+            echo "ID: " . $sala->__getId() . " - Codice: " . $sala->__getCodice() . " - Nome: " . $sala->__getNome() . " - Capienza: " . $sala->__getCapienza() . "\n";
         } else {
             echo "Nessuna sala associata al concerto.\n";
         }

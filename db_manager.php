@@ -140,15 +140,6 @@ class dbManager //classe utilizzata per gestire il database organizzazione_conce
         return $this->execute();
     }
 
-    public function findSala($id) //metodo utilizzato per la query select: in questo metodo verra ritornato il primo record positivo alla query da eseguire
-    {
-        $this->prepare('select * from organizzazione_concerti.sale where id = :id'); //preparazione della query da eseguire
-        $this->bindParamI(':id',$id);//binding del parametro desiderato
-        if (!$this->execute()) { //viene controllato l'esito della query eseguita
-            return false;
-        }
-        return $this->fetchNext(); //ritorno del primo elemento fetchato che rispondeva alla query eseguita
-    }
-
+    
 }
 ?>
